@@ -7,11 +7,11 @@ output "resource_group_location" {
 }
 
 output "shared_svcs_vnet" {
-  value = module.shared-svcs-network.vnet_id
+  value = module.shared_svcs_network.vnet_id
 }
 
 output "shared_svcs_subnets" {
-  value = module.shared-svcs-network.vnet_subnets
+  value = module.shared_svcs_network.vnet_subnets
 }
 
 output "legacy_vnet" {
