@@ -69,7 +69,7 @@ resource "azurerm_managed_application" "hcs" {
 
 data "azurerm_virtual_network" "hcs" {
   depends_on          = [azurerm_managed_application.hcs]
-  name                = "${lookup(azurerm_managed_application.hcs.outputs, "vnet_name")}-vnet"
+  name                = "${lookup(azurerm_managed_application.hcs.outputs, "vnet_name")}"
   resource_group_name = "${data.terraform_remote_state.vnet.outputs.resource_group_name}-mrg-hcs"
 }
 
@@ -77,7 +77,7 @@ resource "azurerm_virtual_network_peering" "hcs-legacy" {
   depends_on                = [azurerm_managed_application.hcs]
   name                      = "HCSToLegacy"
   resource_group_name       = "${data.terraform_remote_state.vnet.outputs.resource_group_name}-mrg-hcs"
-  virtual_network_name      = "${lookup(azurerm_managed_application.hcs.outputs, "vnet_name")}-vnet"
+  virtual_network_name      = "${lookup(azurerm_managed_application.hcs.outputs, "vnet_name")}"
   remote_virtual_network_id = data.terraform_remote_state.vnet.outputs.legacy_vnet
 }
 
