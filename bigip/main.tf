@@ -6,7 +6,7 @@ data "terraform_remote_state" "vnet" {
   backend = "local"
 
   config = {
-    path = "../vnet/terraform.tfstate"
+    path = "../vnets/terraform.tfstate"
   }
 }
 
@@ -80,7 +80,7 @@ resource "azurerm_linux_virtual_machine" "f5bigip" {
     name                 = "bigip-disk"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
-    disk_size_gb         = "80"
+    disk_size_gb         = "100"
   }
 
   custom_data = base64encode(data.template_file.vm_onboard.rendered)

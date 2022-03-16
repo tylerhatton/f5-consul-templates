@@ -15,7 +15,7 @@ output "username" {
 }
 
 output "admin_password" {
-  value = random_password.bigippassword.result
+  value = nonsensitive(random_password.bigippassword.result)
 }
 
 output "vip_internal_address" {
