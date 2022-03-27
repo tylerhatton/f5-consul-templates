@@ -29,6 +29,7 @@ tmos_declared:
     - ${TS_URL}
     - ${DO_URL}
     - ${AS3_URL}
+    - ${FAST_URL}
   do_declaration:
     schemaVersion: 1.0.0
     class: Device

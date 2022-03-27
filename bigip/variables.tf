@@ -56,6 +56,12 @@ variable "TS_URL" {
   default     = "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.20.1/f5-telemetry-1.20.1-1.noarch.rpm"
 }
 
+variable "FAST_URL" {
+  description = "URL to download the BIG-IP F5 Application Services Templates (FAST) module"
+  type        = string
+  default     = "https://github.com/F5Networks/f5-appsvcs-templates/releases/download/v1.16.0/f5-appsvcs-templates-1.16.0-1.noarch.rpm"
+}
+
 variable "libs_dir" {
   description = "Directory on the BIG-IP to download the A&O Toolchain into"
   type        = string
