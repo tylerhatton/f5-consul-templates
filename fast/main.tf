@@ -17,7 +17,7 @@ data "terraform_remote_state" "bigip" {
 # generate zip file
 
 data "template_file" "fast_template" {
-  template = file("${path.module}/templates/bigip.tpl")
+  template = file("${path.module}/templates/fast.yaml.tpl")
 
   vars = {
     vip_address = data.terraform_remote_state.bigip.outputs.vip_internal_address
@@ -39,11 +39,11 @@ data "archive_file" "template_zip" {
 resource "bigip_fast_template" "consul" {
   name       = "Consul"
   source     = "${path.module}/Consul.zip"
-  md5_hash   = data.template_zip.md5_hash
+  md5_hash   = data.archive_file.template_zip.output_md5
 }
 
 resource "bigip_fast_application" "nginx-webserver" {
-  template   = "ConsulWebinar/ConsulWebinar"
+  template   = "Consul/Consul"
   fast_json  = <<EOF
 {
       "tenant": "Consul_Sync",
@@ -52,5 +52,5 @@ resource "bigip_fast_application" "nginx-webserver" {
       "virtualPort": 8080
 }
 EOF
-  depends_on = [bigip_fast_template.consul-webinar]
+  depends_on = [bigip_fast_template.consul]
 }
