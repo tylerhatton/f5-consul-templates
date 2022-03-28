@@ -47,8 +47,9 @@ resource "bigip_fast_application" "nginx-webserver" {
   fast_json  = <<EOF
 {
       "tenant": "Consul_Sync",
+      "service": "nginx",
       "app": "Nginx",
-      "virtualAddress": ${data.terraform_remote_state.bigip.outputs.vip_internal_address},
+      "virtualAddress": "${data.terraform_remote_state.bigip.outputs.vip_internal_address}",
       "virtualPort": 8080
 }
 EOF

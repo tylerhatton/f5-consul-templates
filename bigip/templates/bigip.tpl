@@ -26,7 +26,6 @@ tmos_declared:
   enabled: true
   icontrollx_trusted_sources: false
   icontrollx_package_urls:
-    - ${TS_URL}
     - ${DO_URL}
     - ${AS3_URL}
     - ${FAST_URL}
