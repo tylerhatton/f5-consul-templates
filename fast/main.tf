@@ -30,7 +30,7 @@ data "archive_file" "template_zip" {
 
   source {
     content  = data.template_file.fast_template.rendered
-    filename = "fast.yaml"
+    filename = "Consul.yaml"
   }
 }
 
@@ -42,7 +42,7 @@ resource "bigip_fast_template" "consul" {
   md5_hash   = data.archive_file.template_zip.output_md5
 }
 
-resource "bigip_fast_application" "nginx-webserver" {
+resource "bigip_fast_application" "nginx_webserver" {
   template   = "Consul/Consul"
   fast_json  = <<EOF
 {
