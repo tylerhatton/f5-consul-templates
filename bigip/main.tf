@@ -51,7 +51,7 @@ resource "azurerm_marketplace_agreement" "f5" {
 }
 
 # Create F5 BIGIP VMs
-resource "azurerm_linux_virtual_machine" "f5bigip" {
+resource "azurerm_virtual_machine" "f5bigip" {
   name       = "bigip"
   depends_on = [azurerm_marketplace_agreement.f5]
 
@@ -59,12 +59,20 @@ resource "azurerm_linux_virtual_machine" "f5bigip" {
   resource_group_name = data.terraform_remote_state.vnet.outputs.resource_group_name
 
   network_interface_ids           = [azurerm_network_interface.ext-nic.id]
-  size                            = var.instance_type
-  admin_username                  = var.admin_username
-  admin_password                  = random_password.bigippassword.result
-  disable_password_authentication = false
+  vm_size                         = var.instance_type
 
-  source_image_reference {
+  os_profile {
+    computer_name  = "bigip"
+    admin_username = var.admin_username
+    admin_password = random_password.bigippassword.result
+    custom_data = data.template_file.vm_onboard.rendered
+  }
+
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
+
+  storage_image_reference {
     publisher = var.publisher
     offer     = var.product
     sku       = var.image_name
@@ -77,14 +85,13 @@ resource "azurerm_linux_virtual_machine" "f5bigip" {
     product   = var.product
   }
 
-  os_disk {
+  storage_os_disk {
     name                 = "bigip-disk"
     caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
+    managed_disk_type    = "Standard_LRS"
     disk_size_gb         = "100"
+    create_option        = "FromImage"
   }
-
-  custom_data = base64encode(data.template_file.vm_onboard.rendered)
 
   tags = {
     Name        = "bigip"
