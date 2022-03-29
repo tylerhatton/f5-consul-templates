@@ -100,6 +100,25 @@ resource "azurerm_virtual_machine" "f5bigip" {
   }
 }
 
+resource "azurerm_virtual_machine_extension" "f5bigip" {
+  name                 = "f5bigip"
+  depends_on           = [azurerm_virtual_machine.f5bigip]
+  virtual_machine_id   = azurerm_virtual_machine.f5bigip.id
+  publisher            = "Microsoft.OSTCExtensions"
+  type                 = "CustomScriptForLinux"
+  type_handler_version = "1.2"
+  settings             = <<EOF
+    {
+      "commandToExecute": "bash /var/lib/waagent/CustomData"
+    }
+EOF
+}
+
+resource "time_sleep" "wait_for_azurerm_virtual_machine_f5vm" {
+  depends_on      = [azurerm_virtual_machine_extension.f5bigip]
+  create_duration = "600s"
+}
+
 resource "azurerm_public_ip" "sip_public_ip" {
   name                = "bigip-public-ip"
   location            = data.terraform_remote_state.vnet.outputs.resource_group_location
