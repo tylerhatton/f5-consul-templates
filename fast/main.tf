@@ -37,9 +37,9 @@ data "archive_file" "template_zip" {
 # deploy fast template
 
 resource "bigip_fast_template" "consul" {
-  name       = "Consul"
-  source     = "${path.module}/Consul.zip"
-  md5_hash   = data.archive_file.template_zip.output_md5
+  name     = "Consul"
+  source   = "${path.module}/Consul.zip"
+  md5_hash = data.archive_file.template_zip.output_md5
 }
 
 resource "bigip_fast_application" "nginx_webserver" {

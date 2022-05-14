@@ -65,14 +65,14 @@ resource "azurerm_virtual_machine_scale_set" "web_vmss" {
   os_profile {
     computer_name_prefix = "web-vm-"
     admin_username       = "azure-user"
-    custom_data          = base64encode(
+    custom_data = base64encode(
       templatefile(
         "./templates/webserver.sh",
-        { 
-          endpoint = var.endpoint, 
-          consulconfig = var.consulconfig, 
-          ca_cert = var.ca_cert, 
-          consul_token = var.consul_token 
+        {
+          endpoint     = var.endpoint,
+          consulconfig = var.consulconfig,
+          ca_cert      = var.ca_cert,
+          consul_token = var.consul_token
         }
       )
     )

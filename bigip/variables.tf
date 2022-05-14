@@ -31,7 +31,7 @@ variable "product" {
 }
 
 variable "bigip_version" {
-  default = "16.1.201000"
+  default = "16.1.202000"
 }
 
 variable "admin_username" {

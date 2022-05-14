@@ -58,14 +58,17 @@ resource "azurerm_virtual_machine" "f5bigip" {
   location            = data.terraform_remote_state.vnet.outputs.resource_group_location
   resource_group_name = data.terraform_remote_state.vnet.outputs.resource_group_name
 
-  network_interface_ids           = [azurerm_network_interface.ext-nic.id]
-  vm_size                         = var.instance_type
+  network_interface_ids = [azurerm_network_interface.ext-nic.id]
+  vm_size               = var.instance_type
+
+  delete_os_disk_on_termination    = true
+  delete_data_disks_on_termination = true
 
   os_profile {
     computer_name  = "bigip"
     admin_username = var.admin_username
     admin_password = random_password.bigippassword.result
-    custom_data = data.template_file.vm_onboard.rendered
+    custom_data    = data.template_file.vm_onboard.rendered
   }
 
   os_profile_linux_config {
@@ -86,11 +89,11 @@ resource "azurerm_virtual_machine" "f5bigip" {
   }
 
   storage_os_disk {
-    name                 = "bigip-disk"
-    caching              = "ReadWrite"
-    managed_disk_type    = "Standard_LRS"
-    disk_size_gb         = "100"
-    create_option        = "FromImage"
+    name              = "bigip-disk"
+    caching           = "ReadWrite"
+    managed_disk_type = "Standard_LRS"
+    disk_size_gb      = "100"
+    create_option     = "FromImage"
   }
 
   tags = {
