@@ -46,6 +46,11 @@ resource "azurerm_managed_application" "hcs" {
     version   = "0.0.46"
   }
 
+  timeouts {
+    create = "60m"
+    update = "60m"
+  }
+
   parameters = {
     initialConsulVersion  = "v1.11.4"
     storageAccountName    = "${random_string.storageaccountname.result}"
